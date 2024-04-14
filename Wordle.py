@@ -74,18 +74,16 @@ def clear_screen():
     else:
         _ = system("clear")
 
-
 def compare_characters(inp: str, TURNS: int):
-    compare = list(zip(inp, WORD))
     for idx, char in enumerate(inp):
         if char.lower() in WORD.lower():
-            GRID[TURNS][idx] = char.lower()
+            if char.lower() == WORD[idx].lower():
+                GRID[TURNS][idx] = char.upper()  # Correct letter in correct position
+            else:
+                GRID[TURNS][idx] = char.lower()  # Correct letter in wrong position
         else:
             INCORRECT_WORDS.append(char.lower())
 
-    for idx, tup in enumerate(compare):
-        if len(set(tup)) == 1:
-            GRID[TURNS][idx] = tup[0].upper()
 
 
 def game_logic():
