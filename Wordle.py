@@ -10,7 +10,7 @@ WORD = random.choice(RAW_WORD_LIST)
 GRID = [[" " for _ in range(5)] for _ in range(6)]
 INCORRECT_WORDS = []
 
-TITLE = r"""
+TITLE = colors.BLUE + r"""
      __       __   ______   _______   _______   __        ________         ______   __         ______   __    __  ________
     /  |  _  /  | /      \ /       \ /       \ /  |      /        |       /      \ /  |       /      \ /  \  /  |/        |
     $$ | / \ $$ |/$$$$$$  |$$$$$$$  |$$$$$$$  |$$ |      $$$$$$$$/       /$$$$$$  |$$ |      /$$$$$$  |$$  \ $$ |$$$$$$$$/
@@ -20,9 +20,9 @@ TITLE = r"""
     $$$$/  $$$$ |$$ \__$$ |$$ |  $$ |$$ |__$$ |$$ |_____ $$ |_____       $$ \__/  |$$ |_____ $$ \__$$ |$$ |$$$$ |$$ |_____
     $$$/    $$$ |$$    $$/ $$ |  $$ |$$    $$/ $$       |$$       |      $$    $$/ $$       |$$    $$/ $$ | $$$ |$$       |
     $$/      $$/  $$$$$$/  $$/   $$/ $$$$$$$/  $$$$$$$$/ $$$$$$$$/        $$$$$$/  $$$$$$$$/  $$$$$$/  $$/   $$/ $$$$$$$$/
-"""
+"""+colors.END
 
-INSTRUCTIONS = """
+INSTRUCTIONS = colors.BLUE+"""
 INSTRUCTIONS:
     1) A random 5 letter word is selected by the computer, the objective of the game is
        guess the word that is selected by 6 moves
@@ -34,7 +34,7 @@ INSTRUCTIONS:
     4) Correct letters that are in the correct position are visible as 'UPPERCASE' characters
 
     5) Correct letters that are in the wrong position are visible as 'lowercase' characters
-"""
+"""+colors.END
 
 
 def user_input() -> str:
