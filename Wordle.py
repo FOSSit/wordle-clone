@@ -4,7 +4,7 @@ import random
 from os import system, name
 from time import sleep
 
-RAW_WORD_LIST = words = requests.get("https://raw.githubusercontent.com/chidiwilliams/wordle/main/src/data/words.json").json()
+RAW_WORD_LIST = requests.get("https://raw.githubusercontent.com/chidiwilliams/wordle/main/src/data/words.json").json()
 
 WORD = random.choice(RAW_WORD_LIST)
 GRID = [[" " for _ in range(5)] for _ in range(6)]
