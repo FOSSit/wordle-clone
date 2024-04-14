@@ -45,7 +45,7 @@ INSTRUCTIONS:
 def user_input() -> str:
     inp = input(
         f"{YELLOW}enter a 5 length word that you think may be the answer:{RESET} ").capitalize()
-    print(inp, WORD)
+    
     if len(inp) != 5:
         print(f"{RED}the entered word '{inp}' is not of length '5', try again{RESET}\n")
         return user_input()
@@ -56,6 +56,7 @@ def user_input() -> str:
         return user_input()
 
     return inp
+
 
 def print_grid():
     grid = f"""
