@@ -32,7 +32,7 @@ TITLE = r"""
 """
 
 INSTRUCTIONS = f"""
-{colors.CYAN}INSTRUCTIONS:{colors.END}
+{colors.cyan}INSTRUCTIONS:{colors.END}
     1) A random 5 letter word is selected by the computer, the objective of the game is
        guess the word that is selected by 6 moves
 
