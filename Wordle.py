@@ -1,15 +1,19 @@
+# Import necessary libraries
 import json
 import random
 from os import system, name
 from time import sleep
 
+# Load the word list
 with open("WordList.json", "r") as f:
     RAW_WORD_LIST = json.load(f)["words"]
 
+# Choose a random word
 WORD = random.choice(RAW_WORD_LIST)
 GRID = [[" " for _ in range(5)] for _ in range(6)]
 INCORRECT_WORDS = []
 
+# Define title and instructions
 TITLE = r"""
      __       __   ______   _______   _______   __        ________         ______   __         ______   __    __  ________
     /  |  _  /  | /      \ /       \ /       \ /  |      /        |       /      \ /  |       /      \ /  \  /  |/        |
@@ -24,19 +28,48 @@ TITLE = r"""
 
 INSTRUCTIONS = """
 INSTRUCTIONS:
-    1) A random 5 letter word is selected by the computer, the objective of the game is
-       guess the word that is selected by 6 moves
+    1) A random 5-letter word is selected by the computer. The objective of the game is to guess the word within 6 moves.
 
-    2) The user must enter valid 5 letter words every time they wish to make a guess
+    2) The user must enter valid 5-letter words each time they make a guess.
 
-    3) Incorrect letters of the guess become visible in the 'Incorrect Letters' list
+    3) Incorrect letters of the guess become visible in the 'Incorrect Letters' list.
 
-    4) Correct letters that are in the correct position are visible as 'UPPERCASE' characters
+    4) Correct letters that are in the correct position are visible as 'UPPERCASE' characters.
 
-    5) Correct letters that are in the wrong position are visible as 'lowercase' characters
+    5) Correct letters that are in the wrong position are visible as 'lowercase' characters.
 """
 
+# Define color codes
+color_codes = {
+    "reset": "\033[0m",
+    "red": "\033[31m",
+    "green": "\033[32m",
+    "yellow": "\033[33m",
+    "blue": "\033[34m",
+    "magenta": "\033[35m",
+    "cyan": "\033[36m",
+    "white": "\033[37m",
+}
+def clear_screen():
+    if name == "nt":
+        _ = system("cls")
+    else:
+        _ = system("clear")
+# Helper functions to print colored text and grids
+def print_colored(text, color):
+    print(color_codes[color] + text + color_codes["reset"])
 
+def print_grid():
+    colored_grid = "\n"
+    for row in GRID:
+        colored_grid += " | ".join(row)
+        colored_grid += " |\n"
+    print_colored(colored_grid, "cyan")
+
+# Continue the rest of your functions using the print_colored and print_grid functions
+# Use the helper functions to print the title and instructions with colors as well
+
+# For example, in the game_logic function, when you want to print the grid or instructions, use print_grid() and print_colored
 def user_input() -> str:
     inp = input(
         "enter a 5 length word that you think may be the answer: ").capitalize()
@@ -52,105 +85,67 @@ def user_input() -> str:
 
     return inp
 
-
-def print_grid():
-    grid = f"""
-        | {GRID[0][0]} | {GRID[0][1]} | {GRID[0][2]} | {GRID[0][3]} | {GRID[0][4]} |
-        | {GRID[1][0]} | {GRID[1][1]} | {GRID[1][2]} | {GRID[1][3]} | {GRID[1][4]} |
-        | {GRID[2][0]} | {GRID[2][1]} | {GRID[2][2]} | {GRID[2][3]} | {GRID[2][4]} |
-        | {GRID[3][0]} | {GRID[3][1]} | {GRID[3][2]} | {GRID[3][3]} | {GRID[3][4]} |
-        | {GRID[4][0]} | {GRID[4][1]} | {GRID[4][2]} | {GRID[4][3]} | {GRID[4][4]} |
-        | {GRID[5][0]} | {GRID[5][1]} | {GRID[5][2]} | {GRID[5][3]} | {GRID[5][4]} |
-    """
-    print(grid)
-
-
-def clear_screen():
-    if name == "nt":
-        _ = system("cls")
-    else:
-        _ = system("clear")
-
-
-def compare_characters(inp: str, TURNS: int):
-    compare = list(zip(inp, WORD))
-    for idx, char in enumerate(inp):
-        if char.lower() in WORD.lower():
-            GRID[TURNS][idx] = char.lower()
-        else:
-            INCORRECT_WORDS.append(char.lower())
-
-    for idx, tup in enumerate(compare):
-        if len(set(tup)) == 1:
-            GRID[TURNS][idx] = tup[0].upper()
-
-
 def game_logic():
     TURNS = 0
-    while TURNS < 5:
-
-        print(f"\nTURN NUMBER: {TURNS + 1}\n")
-
-        print("\nINCORRECT_WORDS:")
+    while TURNS < 6:
+        print_colored(f"\nTURN NUMBER: {TURNS + 1}\n", "green")
+        
+        print_colored("\nINCORRECT WORDS:", "red")
         print(list(set(INCORRECT_WORDS)))
-        print()
-
+        
         print("\nCURRENT GRID")
         print_grid()
-
-        print()
+        
         inp = user_input()
-
+        
         compare_characters(inp, TURNS)
-        print(f"\nInputted word >>> {inp}")
-
-        print("\nINCORRECT_WORDS:")
+        print_colored(f"\nInputted word >>> {inp}\n", "blue")
+        
+        print_colored("\nINCORRECT WORDS:", "red")
         print(list(set(INCORRECT_WORDS)))
-        print()
-
+        
         print("\nCURRENT GRID")
         print_grid()
-
+        
         if inp == WORD:
-            print(f"You guessed the word {WORD} in {TURNS + 1} turns")
+            print_colored(f"You guessed the word {WORD} in {TURNS + 1} turns!", "green")
             break
-
-        play = input("enter [y/Y] to continue the game: ").lower()
+        
+        play = input("Enter [y/Y] to continue the game: ").lower()
         if play not in "yes":
-            print("quitting game")
+            print("Quitting game")
             break
-
+        
         print("Continuing game")
-
+        
         TURNS += 1
         sleep(0.5)
         clear_screen()
-
+    
     else:
-        print("You were not able to guess the word")
+        print_colored("You were not able to guess the word.", "red")
         print(f"The word was >>> {WORD}")
-        print("Your current grid state is\n")
+        print_colored("Your current grid state is:", "magenta")
         print_grid()
-
 
 def main():
     clear_screen()
-
-    print(TITLE)
+    
+    print_colored(TITLE, "magenta")
     print("\n\n\n")
-
-    print("This is you grid")
+    
+    print_colored("This is your grid", "blue")
     print_grid()
-    print("\n", INSTRUCTIONS)
-
-    play = input("enter [y/Y] to play the game: ").lower()
+    print("\n")
+    print_colored(INSTRUCTIONS, "cyan")
+    
+    play = input("Enter [y/Y] to play the game: ").lower()
     if play not in "yes":
-        print("quitting game")
+        print_colored("Quitting game", "red")
         return
     sleep(0.5)
     clear_screen()
-
+    
     game_logic()
-
 
 main()
