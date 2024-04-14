@@ -73,16 +73,23 @@ def clear_screen():
 
 
 def compare_characters(inp: str, TURNS: int):
-    compare = list(zip(inp, WORD))
-    for idx, char in enumerate(inp):
-        if char.lower() in WORD.lower():
-            GRID[TURNS][idx] = char.lower()
-        else:
-            INCORRECT_WORDS.append(char.lower())
+    correct_positions = []
+    correct_letters = []
 
-    for idx, tup in enumerate(compare):
-        if len(set(tup)) == 1:
-            GRID[TURNS][idx] = tup[0].upper()
+    # Check for correct letters and their positions
+    for idx, char in enumerate(inp):
+        if char.lower() == WORD[idx].lower():
+            correct_positions.append(idx)
+            correct_letters.append(char.lower())
+
+    # Fill the grid based on correct positions and letters
+    for idx in range(5):
+        if idx in correct_positions:
+            GRID[TURNS][idx] = inp[idx].upper()
+        elif inp[idx].lower() in WORD.lower() and idx not in correct_positions:
+            GRID[TURNS][idx] = inp[idx].lower()
+        else:
+            INCORRECT_WORDS.append(inp[idx].lower())
 
 
 def game_logic():
@@ -149,7 +156,7 @@ def main():
         return
     sleep(0.5)
     clear_screen()
-
+    
     game_logic()
 
 
