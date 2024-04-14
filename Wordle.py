@@ -2,13 +2,16 @@ import json
 import random
 from os import system, name
 from time import sleep
+from colorama import init, Fore, Style
+
+init(autoreset=True)  # Initialize colorama for autoresetting color codes
 
 with open("WordList.json", "r") as f:
     RAW_WORD_LIST = json.load(f)["words"]
 
 WORD = random.choice(RAW_WORD_LIST)
 GRID = [[" " for _ in range(5)] for _ in range(6)]
-INCORRECT_LETTERS = []
+INCORRECT_WORDS = []
 
 TITLE = r"""
      __       __   ______   _______   _______   __        ________         ______   __         ______   __    __  ________
@@ -22,29 +25,32 @@ TITLE = r"""
     $$/      $$/  $$$$$$/  $$/   $$/ $$$$$$$/  $$$$$$$$/ $$$$$$$$/        $$$$$$/  $$$$$$$$/  $$$$$$/  $$/   $$/ $$$$$$$$/
 """
 
-INSTRUCTIONS = """
-INSTRUCTIONS:
-    1) A random 5 letter word is selected by the computer, the objective of the game is
-       guess the word that is selected by 6 moves
+INSTRUCTIONS = f"""
+{Fore.CYAN}INSTRUCTIONS:{Style.RESET_ALL}
+    1) A random 5-letter word is selected by the computer. The objective of the game is to guess the word within 6 moves.
 
-    2) The user must enter valid 5 letter words every time they wish to make a guess
+    2) The user must enter valid 5-letter words every time they wish to make a guess.
 
-    3) Incorrect letters of the guess become visible in the 'Incorrect Letters' list
+    3) Incorrect letters of the guess become visible in the 'Incorrect Letters' list.
 
-    4) Correct letters that are in the correct position are visible as 'UPPERCASE' characters
+    4) Correct letters that are in the correct position are visible as {Fore.GREEN}'UPPERCASE'{Style.RESET_ALL} characters.
 
-    5) Correct letters that are in the wrong position are visible as 'lowercase' characters
+    5) Correct letters that are in the wrong position are visible as {Fore.RED}'lowercase'{Style.RESET_ALL} characters.
 """
 
 
 def user_input() -> str:
-    inp = input("Enter a 5-letter word as your guess: ").upper()
+    inp = input(
+        f"{Fore.YELLOW}Enter a 5-letter word that you think may be the answer: {Style.RESET_ALL}").capitalize()
+    print(inp, WORD)
     if len(inp) != 5:
-        print(f"The entered word '{inp}' is not of length '5'. Please try again.\n")
+        print(
+            f"{Fore.RED}The entered word '{inp}' is not of length '5', try again{Style.RESET_ALL}\n")
         return user_input()
 
     if inp not in RAW_WORD_LIST:
-        print(f"The entered word '{inp}' is not recognized by the game dictionary. Please try again.\n")
+        print(
+            f"{Fore.RED}The entered word '{inp}' is not recognized by the game dictionary, try again{Style.RESET_ALL}\n")
         return user_input()
 
     return inp
@@ -52,12 +58,12 @@ def user_input() -> str:
 
 def print_grid():
     grid = f"""
-        | {GRID[0][0]} | {GRID[0][1]} | {GRID[0][2]} | {GRID[0][3]} | {GRID[0][4]} |
-        | {GRID[1][0]} | {GRID[1][1]} | {GRID[1][2]} | {GRID[1][3]} | {GRID[1][4]} |
-        | {GRID[2][0]} | {GRID[2][1]} | {GRID[2][2]} | {GRID[2][3]} | {GRID[2][4]} |
-        | {GRID[3][0]} | {GRID[3][1]} | {GRID[3][2]} | {GRID[3][3]} | {GRID[3][4]} |
-        | {GRID[4][0]} | {GRID[4][1]} | {GRID[4][2]} | {GRID[4][3]} | {GRID[4][4]} |
-        | {GRID[5][0]} | {GRID[5][1]} | {GRID[5][2]} | {GRID[5][3]} | {GRID[5][4]} |
+        | {Fore.YELLOW}{GRID[0][0]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[0][1]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[0][2]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[0][3]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[0][4]}{Style.RESET_ALL} |
+        | {Fore.YELLOW}{GRID[1][0]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[1][1]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[1][2]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[1][3]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[1][4]}{Style.RESET_ALL} |
+        | {Fore.YELLOW}{GRID[2][0]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[2][1]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[2][2]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[2][3]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[2][4]}{Style.RESET_ALL} |
+        | {Fore.YELLOW}{GRID[3][0]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[3][1]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[3][2]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[3][3]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[3][4]}{Style.RESET_ALL} |
+        | {Fore.YELLOW}{GRID[4][0]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[4][1]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[4][2]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[4][3]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[4][4]}{Style.RESET_ALL} |
+        | {Fore.YELLOW}{GRID[5][0]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[5][1]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[5][2]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[5][3]}{Style.RESET_ALL} | {Fore.YELLOW}{GRID[5][4]}{Style.RESET_ALL} |
     """
     print(grid)
 
@@ -70,46 +76,51 @@ def clear_screen():
 
 
 def compare_characters(inp: str, TURNS: int):
+    compare = list(zip(inp, WORD))
     for idx, char in enumerate(inp):
-        if char == WORD[idx]:
-            GRID[TURNS][idx] = char.upper()
-        elif char in WORD:
+        if char.lower() in WORD.lower():
             GRID[TURNS][idx] = char.lower()
         else:
-            INCORRECT_LETTERS.append(char.lower())
+            INCORRECT_WORDS.append(char.lower())
+
+    for idx, tup in enumerate(compare):
+        if len(set(tup)) == 1:
+            GRID[TURNS][idx] = tup[0].upper()
 
 
 def game_logic():
     TURNS = 0
-    while TURNS < 6:
+    while TURNS < 5:
+
         print(f"\nTURN NUMBER: {TURNS + 1}\n")
 
-        print("Incorrect Letters:")
-        print(list(set(INCORRECT_LETTERS)))
+        print("\nINCORRECT_WORDS:")
+        print(list(set(INCORRECT_WORDS)))
         print()
 
-        print("CURRENT GRID")
+        print("\nCURRENT GRID")
         print_grid()
 
+        print()
         inp = user_input()
 
         compare_characters(inp, TURNS)
         print(f"\nInputted word >>> {inp}")
 
-        print("Incorrect Letters:")
-        print(list(set(INCORRECT_LETTERS)))
+        print("\nINCORRECT_WORDS:")
+        print(list(set(INCORRECT_WORDS)))
         print()
 
-        print("CURRENT GRID")
+        print("\nCURRENT GRID")
         print_grid()
 
         if inp == WORD:
-            print(f"You guessed the word {WORD} in {TURNS + 1} turns")
+            print(f"\n{Fore.GREEN}You guessed the word {WORD} in {TURNS + 1} turns{Style.RESET_ALL}")
             break
 
-        play = input("Enter [y/Y] to continue the game: ").lower()
+        play = input("enter [y/Y] to continue the game: ").lower()
         if play not in "yes":
-            print("Quitting game")
+            print("quitting game")
             break
 
         print("Continuing game")
@@ -119,9 +130,9 @@ def game_logic():
         clear_screen()
 
     else:
-        print("You were not able to guess the word.")
+        print("\n{Fore.RED}You were not able to guess the word{Style.RESET_ALL}")
         print(f"The word was >>> {WORD}")
-        print("Your current grid state is\n")
+        print("\nYour current grid state is\n")
         print_grid()
 
 
@@ -135,9 +146,9 @@ def main():
     print_grid()
     print("\n", INSTRUCTIONS)
 
-    play = input("Enter [y/Y] to play the game: ").lower()
+    play = input("enter [y/Y] to play the game: ").lower()
     if play not in "yes":
-        print("Quitting game")
+        print("quitting game")
         return
     sleep(0.5)
     clear_screen()
@@ -145,4 +156,5 @@ def main():
     game_logic()
 
 
-main()
+if __name__ == "__main__":
+    main()
