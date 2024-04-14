@@ -1,10 +1,10 @@
+import requests
 import json
 import random
 from os import system, name
 from time import sleep
 
-with open("WordList.json", "r") as f:
-    RAW_WORD_LIST = json.load(f)["words"]
+RAW_WORD_LIST = words = requests.get("https://raw.githubusercontent.com/chidiwilliams/wordle/main/src/data/words.json").json()
 
 WORD = random.choice(RAW_WORD_LIST)
 GRID = [[" " for _ in range(5)] for _ in range(6)]
