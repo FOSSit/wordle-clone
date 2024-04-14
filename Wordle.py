@@ -128,7 +128,6 @@ def game_logic():
 
     else:
         print("You were not able to guess the word")
-        print(f"The word was >>> {WORD}")
         print("Your current grid state is\n")
         print_grid()
 
