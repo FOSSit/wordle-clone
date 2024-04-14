@@ -40,7 +40,6 @@ INSTRUCTIONS:
 def user_input() -> str:
     inp = input(
         "enter a 5 length word that you think may be the answer: ").capitalize()
-    print(inp, WORD)
     if len(inp) != 5:
         print(f"the entered word '{inp}' is not of length '5', try again\n")
         return user_input()
@@ -128,9 +127,11 @@ def game_logic():
 
     else:
         print("You were not able to guess the word")
-        print(f"The word was >>> {WORD}")
         print("Your current grid state is\n")
         print_grid()
+    if TURNS==5 and inp!= WORD:
+        print("You were not able to guess the word in 5 tries")
+        print(f"The right word was {WORD}" )
 
 
 def main():
