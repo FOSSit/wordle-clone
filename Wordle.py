@@ -40,13 +40,13 @@ INSTRUCTIONS:
 def user_input() -> str:
     inp = input(
         "enter a 5 length word that you think may be the answer: ").capitalize()
-    print(inp)
+    prYellow(inp)
     if len(inp) != 5:
-        print(f"the entered word '{inp}' is not of length '5', try again\n")
+        prRed(f"the entered word '{inp}' is not of length '5', try again\n")
         return user_input()
 
     if inp not in RAW_WORD_LIST:
-        print(
+        prRed(
             f"the entered word '{inp}' is not recognized by the game dictionary, try again\n")
         return user_input()
 
@@ -62,7 +62,7 @@ def print_grid():
         | {GRID[4][0]} | {GRID[4][1]} | {GRID[4][2]} | {GRID[4][3]} | {GRID[4][4]} |
         | {GRID[5][0]} | {GRID[5][1]} | {GRID[5][2]} | {GRID[5][3]} | {GRID[5][4]} |
     """
-    print(grid)
+    prCyan(grid)
 
 
 def clear_screen():
@@ -88,47 +88,47 @@ def compare_characters(inp: str, TURNS: int):
 def game_logic():
     TURNS = 0
     while TURNS < 5:
-        print(f"\nTURN NUMBER: {TURNS + 1}\n")
+        prPurple(f"\nTURN NUMBER: {TURNS + 1}\n")
 
-        print("\nINCORRECT_WORDS:")
-        print(list(set(INCORRECT_WORDS)))
+        prPurple("\nINCORRECT_WORDS:")
+        prPurple(list(set(INCORRECT_WORDS)))
         print()
 
-        print("\nCURRENT GRID")
+        prCyan("\nCURRENT GRID")
         print_grid()
 
         print()
         inp = user_input()
 
         compare_characters(inp, TURNS)
-        print(f"\nInputted word >>> {inp}")
+        prPurple(f"\nInputted word >>> {inp}")
 
-        print("\nINCORRECT_WORDS:")
-        print(list(set(INCORRECT_WORDS)))
+        prPurple("\nINCORRECT_WORDS:")
+        prPurple(list(set(INCORRECT_WORDS)))
         print()
 
-        print("\nCURRENT GRID")
+        prCyan("\nCURRENT GRID")
         print_grid()
 
         if inp == WORD:
-            print(f"You guessed the word {WORD} in {TURNS + 1} turns")
+            prGreen(f"You guessed the word {WORD} in {TURNS + 1} turns")
             break
 
         play = input("enter [y/Y] to continue the game: ").lower()
         if play not in "yes":
-            print("quitting game")
+            prRed("quitting game")
             break
 
-        print("Continuing game")
+        prGreen("Continuing game")
 
         TURNS += 1
         sleep(0.5)
         clear_screen()
 
     else:
-        print("You were not able to guess the word")
-        print(f"The word was >>> {WORD}")
-        print("Your current grid state is\n")
+        prRed("You were not able to guess the word")
+        prPurple(f"The word was >>> {WORD}")
+        prCyan("Your current grid state is\n")
         print_grid()
 
 
@@ -159,16 +159,16 @@ def prBlack(skk): print("\033[98m {}\033[00m" .format(skk))
 def main():
     clear_screen()
 
-    prRed(TITLE)
+    prGreen(TITLE)
     print("\n\n\n")
 
-    print("This is your grid")
+    prCyan("This is your grid")
     print_grid()
-    print("\n", INSTRUCTIONS)
+    prGreen(f"\n{INSTRUCTIONS}")
 
     play = input("enter [y/Y] to play the game: ").lower()
     if play not in "yes":
-        print("quitting game")
+        prRed("quitting game")
         return
     sleep(0.5)
     clear_screen()
