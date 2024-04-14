@@ -40,7 +40,7 @@ INSTRUCTIONS:
 def user_input() -> str:
     inp = input(
         "enter a 5 length word that you think may be the answer: ").capitalize()
-    print(inp, WORD)
+    print(inp) # removed answer from print statement.
     if len(inp) != 5:
         print(f"the entered word '{inp}' is not of length '5', try again\n")
         return user_input()
