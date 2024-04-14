@@ -17,5 +17,6 @@
 ```sh
 git clone https://github.com/FOSSit/wordle-clone
 cd wordle-clone
+pip install -r requirements.txt
 python Wordle.py
 ```
