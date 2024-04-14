@@ -1,12 +1,13 @@
-import json
+# import json
+from random_word import RandomWords
 import random
 from os import system, name
 from time import sleep
 
-with open("WordList.json", "r") as f:
-    RAW_WORD_LIST = json.load(f)["words"]
+r = RandomWords()
 
-WORD = random.choice(RAW_WORD_LIST)
+# RAW_WORD_LIST=r
+WORD = r.get_random_word()
 GRID = [[" " for _ in range(5)] for _ in range(6)]
 INCORRECT_WORDS = []
 
@@ -45,7 +46,7 @@ def user_input() -> str:
         print(f"the entered word '{inp}' is not of length '5', try again\n")
         return user_input()
 
-    if inp not in RAW_WORD_LIST:
+    if inp !=WORD:
         print(
             f"the entered word '{inp}' is not recognized by the game dictionary, try again\n")
         return user_input()
