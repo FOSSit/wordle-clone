@@ -2,6 +2,7 @@ import json
 import random
 from os import system, name
 from time import sleep
+from colorama import Fore, init
 
 with open("WordList.json", "r") as f:
     RAW_WORD_LIST = json.load(f)["words"]
@@ -10,7 +11,7 @@ WORD = random.choice(RAW_WORD_LIST)
 GRID = [[" " for _ in range(5)] for _ in range(6)]
 INCORRECT_WORDS = []
 
-TITLE = r"""
+TITLE = Fore.BLUE+r"""
      __       __   ______   _______   _______   __        ________         ______   __         ______   __    __  ________
     /  |  _  /  | /      \ /       \ /       \ /  |      /        |       /      \ /  |       /      \ /  \  /  |/        |
     $$ | / \ $$ |/$$$$$$  |$$$$$$$  |$$$$$$$  |$$ |      $$$$$$$$/       /$$$$$$  |$$ |      /$$$$$$  |$$  \ $$ |$$$$$$$$/
@@ -22,7 +23,7 @@ TITLE = r"""
     $$/      $$/  $$$$$$/  $$/   $$/ $$$$$$$/  $$$$$$$$/ $$$$$$$$/        $$$$$$/  $$$$$$$$/  $$$$$$/  $$/   $$/ $$$$$$$$/
 """
 
-INSTRUCTIONS = """
+INSTRUCTIONS = Fore.RED+"""
 INSTRUCTIONS:
     1) A random 5 letter word is selected by the computer, the objective of the game is
        guess the word that is selected by 6 moves
@@ -89,47 +90,47 @@ def game_logic():
     TURNS = 0
     while TURNS < 5:
 
-        print(f"\nTURN NUMBER: {TURNS + 1}\n")
+        print(f"\nTURN NUMBER: {TURNS + 1}\n") 
 
-        print("\nINCORRECT_WORDS:")
+        print(Fore.RED + "\nINCORRECT_WORDS:")
         print(list(set(INCORRECT_WORDS)))
-        print()
+        print(Fore.RESET)
 
-        print("\nCURRENT GRID")
+        print(Fore.GREEN + "\nCURRENT GRID")
         print_grid()
 
-        print()
+        print(Fore.RESET)
         inp = user_input()
 
         compare_characters(inp, TURNS)
-        print(f"\nInputted word >>> {inp}")
+        print(Fore.YELLOW + f"\nInputted word >>> {inp}")
 
-        print("\nINCORRECT_WORDS:")
+        print(Fore.RED + "\nINCORRECT_WORDS:")
         print(list(set(INCORRECT_WORDS)))
-        print()
+        print(Fore.RESET)
 
         print("\nCURRENT GRID")
         print_grid()
 
         if inp == WORD:
-            print(f"You guessed the word {WORD} in {TURNS + 1} turns")
+            print(Fore.GREEN + f"You guessed the word {WORD} in {TURNS + 1} turns")
             break
 
         play = input("enter [y/Y] to continue the game: ").lower()
         if play not in "yes":
-            print("quitting game")
+            print(Fore.YELLOW+"quitting game")
             break
 
-        print("Continuing game")
+        print(Fore.CYAN+"Continuing game")
 
         TURNS += 1
         sleep(0.5)
         clear_screen()
 
     else:
-        print("You were not able to guess the word")
-        print(f"The word was >>> {WORD}")
-        print("Your current grid state is\n")
+        print(Fore.RED+"You were not able to guess the word")
+        print(Fore.RED+f"The word was >>> {WORD}")
+        print(Fore.GREEN+"Your current grid state is\n")
         print_grid()
 
 
