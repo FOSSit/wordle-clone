@@ -3,6 +3,12 @@ import random
 from os import system, name
 from time import sleep
 
+# Define ANSI escape codes
+RESET = "\033[0m"
+RED = "\033[31m"
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+
 with open("WordList.json", "r") as f:
     RAW_WORD_LIST = json.load(f)["words"]
 
@@ -36,22 +42,20 @@ INSTRUCTIONS:
     5) Correct letters that are in the wrong position are visible as 'lowercase' characters
 """
 
-
 def user_input() -> str:
     inp = input(
-        "enter a 5 length word that you think may be the answer: ").capitalize()
+        f"{YELLOW}enter a 5 length word that you think may be the answer:{RESET} ").capitalize()
     print(inp, WORD)
     if len(inp) != 5:
-        print(f"the entered word '{inp}' is not of length '5', try again\n")
+        print(f"{RED}the entered word '{inp}' is not of length '5', try again{RESET}\n")
         return user_input()
 
     if inp not in RAW_WORD_LIST:
         print(
-            f"the entered word '{inp}' is not recognized by the game dictionary, try again\n")
+            f"{RED}the entered word '{inp}' is not recognized by the game dictionary, try again{RESET}\n")
         return user_input()
 
     return inp
-
 
 def print_grid():
     grid = f"""
@@ -64,13 +68,11 @@ def print_grid():
     """
     print(grid)
 
-
 def clear_screen():
     if name == "nt":
         _ = system("cls")
     else:
         _ = system("clear")
-
 
 def compare_characters(inp: str, TURNS: int):
     compare = list(zip(inp, WORD))
@@ -84,12 +86,11 @@ def compare_characters(inp: str, TURNS: int):
         if len(set(tup)) == 1:
             GRID[TURNS][idx] = tup[0].upper()
 
-
 def game_logic():
     TURNS = 0
     while TURNS < 5:
 
-        print(f"\nTURN NUMBER: {TURNS + 1}\n")
+        print(f"\n{GREEN}TURN NUMBER: {TURNS + 1}{RESET}\n")
 
         print("\nINCORRECT_WORDS:")
         print(list(set(INCORRECT_WORDS)))
@@ -112,7 +113,7 @@ def game_logic():
         print_grid()
 
         if inp == WORD:
-            print(f"You guessed the word {WORD} in {TURNS + 1} turns")
+            print(f"{GREEN}You guessed the word {WORD} in {TURNS + 1} turns{RESET}")
             break
 
         play = input("enter [y/Y] to continue the game: ").lower()
