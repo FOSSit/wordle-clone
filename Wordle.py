@@ -40,7 +40,7 @@ INSTRUCTIONS:
 def user_input() -> str:
     inp = input(
         "enter a 5 length word that you think may be the answer: ").capitalize()
-    print(inp, WORD)
+    print(inp)
     if len(inp) != 5:
         print(f"the entered word '{inp}' is not of length '5', try again\n")
         return user_input()
@@ -89,7 +89,7 @@ def game_logic():
     TURNS = 0
     while TURNS < 5:
 
-        print(f"\nTURN NUMBER: {TURNS + 1}\n")
+        print(f"\n\033[1;37TURN NUMBER: {TURNS + 1}\n")
 
         print("\nINCORRECT_WORDS:")
         print(list(set(INCORRECT_WORDS)))
@@ -102,9 +102,9 @@ def game_logic():
         inp = user_input()
 
         compare_characters(inp, TURNS)
-        print(f"\nInputted word >>> {inp}")
+        print(f"\n\033[1;34m Inputted word >>> {inp}")
 
-        print("\nINCORRECT_WORDS:")
+        print("\n\033[1;31mINCORRECT_WORDS:")
         print(list(set(INCORRECT_WORDS)))
         print()
 
@@ -112,10 +112,10 @@ def game_logic():
         print_grid()
 
         if inp == WORD:
-            print(f"You guessed the word {WORD} in {TURNS + 1} turns")
+            print(f"\033[1;32m You guessed the word {WORD} in {TURNS + 1} turns")
             break
 
-        play = input("enter [y/Y] to continue the game: ").lower()
+        play = input("\033[1;33m enter [y/Y] to continue the game: ").lower()
         if play not in "yes":
             print("quitting game")
             break
@@ -139,17 +139,17 @@ def main():
     print(TITLE)
     print("\n\n\n")
 
-    print("This is you grid")
+    print("\033[1;37mThis is you grid")
     print_grid()
     print("\n", INSTRUCTIONS)
 
-    play = input("enter [y/Y] to play the game: ").lower()
+    play = input("\033[1;33menter [y/Y] to play the game: ").lower()
     if play not in "yes":
         print("quitting game")
         return
     sleep(0.5)
     clear_screen()
-
+    print("\033[1;37")
     game_logic()
 
 
