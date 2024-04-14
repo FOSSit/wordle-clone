@@ -4,12 +4,12 @@ from os import system, name
 from time import sleep
 
 class colors:
-    RED = '\033[91m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    BLUE = '\033[94m'
-    MAGENTA = '\033[95m'
-    CYAN = '\033[96m'
+    red = '\033[91m'
+    green = '\033[92m'
+    yellow = '\033[93m'
+    blue = '\033[94m'
+    magenta = '\033[95m'
+    cyan = '\033[96m'
     END = '\033[0m'
 
 with open("WordList.json", "r") as f:
