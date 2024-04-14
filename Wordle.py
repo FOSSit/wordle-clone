@@ -3,7 +3,7 @@ import random
 from os import system, name
 from time import sleep
 
-with open("WordList.json", "r") as f:
+with open("words_list.json", "r") as f:
     RAW_WORD_LIST = json.load(f)["words"]
 
 WORD = random.choice(RAW_WORD_LIST)
