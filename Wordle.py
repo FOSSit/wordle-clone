@@ -2,6 +2,11 @@ import json
 import random
 from os import system, name
 from time import sleep
+from colorama import init
+
+from colorama import Fore, Back, Style
+
+init()
 
 with open("WordList.json", "r") as f:
     RAW_WORD_LIST = json.load(f)["words"]
@@ -76,13 +81,15 @@ def compare_characters(inp: str, TURNS: int):
     compare = list(zip(inp, WORD))
     for idx, char in enumerate(inp):
         if char.lower() in WORD.lower():
-            GRID[TURNS][idx] = char.lower()
+            GRID[TURNS][idx] = Fore.GREEN + char.lower() + Fore.RESET
         else:
             INCORRECT_WORDS.append(char.lower())
 
     for idx, tup in enumerate(compare):
         if len(set(tup)) == 1:
-            GRID[TURNS][idx] = tup[0].upper()
+            GRID[TURNS][idx] = Fore.RED + tup[0].upper() + Fore.RESET
+
+    Style.RESET_ALL
 
 
 def game_logic():
