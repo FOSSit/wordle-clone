@@ -6,6 +6,13 @@ from time import sleep
 with open("WordList.json", "r") as f:
     RAW_WORD_LIST = json.load(f)["words"]
 
+class colors:
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    BLUE = '\033[94m'
+    END = '\033[0m'
+
 WORD = random.choice(RAW_WORD_LIST)
 GRID = [[" " for _ in range(5)] for _ in range(6)]
 INCORRECT_WORDS = []
