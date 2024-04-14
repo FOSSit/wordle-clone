@@ -3,6 +3,15 @@ import random
 from os import system, name
 from time import sleep
 
+class colors:
+    red = '\033[91m'
+    green = '\033[92m'
+    yellow = '\033[93m'
+    blue = '\033[94m'
+    magenta = '\033[95m'
+    cyan = '\033[96m'
+    END = '\033[0m'
+
 with open("WordList.json", "r") as f:
     RAW_WORD_LIST = json.load(f)["words"]
 
@@ -22,8 +31,8 @@ TITLE = r"""
     $$/      $$/  $$$$$$/  $$/   $$/ $$$$$$$/  $$$$$$$$/ $$$$$$$$/        $$$$$$/  $$$$$$$$/  $$$$$$/  $$/   $$/ $$$$$$$$/
 """
 
-INSTRUCTIONS = """
-INSTRUCTIONS:
+INSTRUCTIONS = f"""
+{colors.cyan}INSTRUCTIONS:{colors.END}
     1) A random 5 letter word is selected by the computer, the objective of the game is
        guess the word that is selected by 6 moves
 
@@ -40,14 +49,14 @@ INSTRUCTIONS:
 def user_input() -> str:
     inp = input(
         "enter a 5 length word that you think may be the answer: ").capitalize()
-    print(inp, WORD)
+    
     if len(inp) != 5:
-        print(f"the entered word '{inp}' is not of length '5', try again\n")
+        print(f"{colors.red}the entered word '{inp}' is not of length '5', try again{colors.END}\n")
         return user_input()
 
     if inp not in RAW_WORD_LIST:
         print(
-            f"the entered word '{inp}' is not recognized by the game dictionary, try again\n")
+            f"{colors.red}the entered word '{inp}' is not recognized by the game dictionary, try again{colors.END}\n")
         return user_input()
 
     return inp
@@ -89,9 +98,9 @@ def game_logic():
     TURNS = 0
     while TURNS < 5:
 
-        print(f"\nTURN NUMBER: {TURNS + 1}\n")
+        print(f"{colors.yellow}\nTURN NUMBER: {TURNS + 1}{colors.END}\n")
 
-        print("\nINCORRECT_WORDS:")
+        print("{colors.blue}\nINCORRECT_WORDS:{colors.END}")
         print(list(set(INCORRECT_WORDS)))
         print()
 
@@ -102,9 +111,9 @@ def game_logic():
         inp = user_input()
 
         compare_characters(inp, TURNS)
-        print(f"\nInputted word >>> {inp}")
+        print(f"{colors.magenta}\nInputted word >>> {inp}{colors.END}")
 
-        print("\nINCORRECT_WORDS:")
+        print("{colors.red}\nINCORRECT_WORDS:{colors.red}")
         print(list(set(INCORRECT_WORDS)))
         print()
 
@@ -112,12 +121,12 @@ def game_logic():
         print_grid()
 
         if inp == WORD:
-            print(f"You guessed the word {WORD} in {TURNS + 1} turns")
+            print(f"{colors.green}You guessed the word {WORD} in {TURNS + 1} turns{colors.END}")
             break
 
         play = input("enter [y/Y] to continue the game: ").lower()
         if play not in "yes":
-            print("quitting game")
+            print("{colors.red}quitting game{colors.END}")
             break
 
         print("Continuing game")
@@ -127,7 +136,7 @@ def game_logic():
         clear_screen()
 
     else:
-        print("You were not able to guess the word")
+        print("{colors.red}You were not able to guess the word{colors.END}")
         print(f"The word was >>> {WORD}")
         print("Your current grid state is\n")
         print_grid()
