@@ -3,7 +3,7 @@ import random
 from os import system, name
 from time import sleep
 
-with open("WordList.json", "r") as f:
+with open("words_list.json", "r") as f:
     RAW_WORD_LIST = json.load(f)["words"]
 
 WORD = random.choice(RAW_WORD_LIST)
@@ -36,18 +36,24 @@ INSTRUCTIONS:
     5) Correct letters that are in the wrong position are visible as 'lowercase' characters
 """
 
+# Define ANSI escape codes for text color
+class Color:
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    END = '\033[0m'
 
 def user_input() -> str:
     inp = input(
         "enter a 5 length word that you think may be the answer: ").capitalize()
     print(inp, WORD)
     if len(inp) != 5:
-        print(f"the entered word '{inp}' is not of length '5', try again\n")
+        print(f"{Color.RED}The entered word '{inp}' is not of length '5', try again{Color.END}\n")
         return user_input()
 
     if inp not in RAW_WORD_LIST:
         print(
-            f"the entered word '{inp}' is not recognized by the game dictionary, try again\n")
+            f"{Color.RED}The entered word '{inp}' is not recognized by the game dictionary, try again{Color.END}\n")
         return user_input()
 
     return inp
@@ -76,13 +82,13 @@ def compare_characters(inp: str, TURNS: int):
     compare = list(zip(inp, WORD))
     for idx, char in enumerate(inp):
         if char.lower() in WORD.lower():
-            GRID[TURNS][idx] = char.lower()
+            GRID[TURNS][idx] = f"{Color.YELLOW}{char.lower()}{Color.END}"
         else:
             INCORRECT_WORDS.append(char.lower())
 
     for idx, tup in enumerate(compare):
         if len(set(tup)) == 1:
-            GRID[TURNS][idx] = tup[0].upper()
+            GRID[TURNS][idx] = f"{Color.GREEN}{tup[0].upper()}{Color.END}"
 
 
 def game_logic():
@@ -112,7 +118,7 @@ def game_logic():
         print_grid()
 
         if inp == WORD:
-            print(f"You guessed the word {WORD} in {TURNS + 1} turns")
+            print(f"{Color.GREEN}You guessed the word {WORD} in {TURNS + 1} turns{Color.END}")
             break
 
         play = input("enter [y/Y] to continue the game: ").lower()
@@ -127,8 +133,8 @@ def game_logic():
         clear_screen()
 
     else:
-        print("You were not able to guess the word")
-        print(f"The word was >>> {WORD}")
+        print(f"{Color.RED}You were not able to guess the word{Color.END}")
+        print(f"{Color.RED}The word was >>> {WORD}{Color.END}")
         print("Your current grid state is\n")
         print_grid()
 
