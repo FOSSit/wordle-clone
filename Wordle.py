@@ -40,7 +40,7 @@ INSTRUCTIONS:
 def user_input() -> str:
     inp = input(
         "enter a 5 length word that you think may be the answer: ").capitalize()
-    print(inp, WORD)
+    print(inp)
     if len(inp) != 5:
         print(f"the entered word '{inp}' is not of length '5', try again\n")
         return user_input()
@@ -88,7 +88,6 @@ def compare_characters(inp: str, TURNS: int):
 def game_logic():
     TURNS = 0
     while TURNS < 5:
-
         print(f"\nTURN NUMBER: {TURNS + 1}\n")
 
         print("\nINCORRECT_WORDS:")
@@ -133,13 +132,37 @@ def game_logic():
         print_grid()
 
 
+def prRed(skk): print("\033[91m {}\033[00m" .format(skk))
+
+
+def prGreen(skk): print("\033[92m {}\033[00m" .format(skk))
+
+
+def prYellow(skk): print("\033[93m {}\033[00m" .format(skk))
+
+
+def prLightPurple(skk): print("\033[94m {}\033[00m" .format(skk))
+
+
+def prPurple(skk): print("\033[95m {}\033[00m" .format(skk))
+
+
+def prCyan(skk): print("\033[96m {}\033[00m" .format(skk))
+
+
+def prLightGray(skk): print("\033[97m {}\033[00m" .format(skk))
+
+
+def prBlack(skk): print("\033[98m {}\033[00m" .format(skk))
+
+
 def main():
     clear_screen()
 
-    print(TITLE)
+    prRed(TITLE)
     print("\n\n\n")
 
-    print("This is you grid")
+    print("This is your grid")
     print_grid()
     print("\n", INSTRUCTIONS)
 
