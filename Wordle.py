@@ -8,7 +8,7 @@ with open("WordList.json", "r") as f:
 
 WORD = random.choice(RAW_WORD_LIST)
 GRID = [[" " for _ in range(5)] for _ in range(6)]
-INCORRECT_WORDS = []
+INCORRECT_LETTERS = []
 
 TITLE = r"""
      __       __   ______   _______   _______   __        ________         ______   __         ______   __    __  ________
@@ -38,16 +38,13 @@ INSTRUCTIONS:
 
 
 def user_input() -> str:
-    inp = input(
-        "enter a 5 length word that you think may be the answer: ").capitalize()
-    print(inp, WORD)
+    inp = input("Enter a 5-letter word as your guess: ").upper()
     if len(inp) != 5:
-        print(f"the entered word '{inp}' is not of length '5', try again\n")
+        print(f"The entered word '{inp}' is not of length '5'. Please try again.\n")
         return user_input()
 
     if inp not in RAW_WORD_LIST:
-        print(
-            f"the entered word '{inp}' is not recognized by the game dictionary, try again\n")
+        print(f"The entered word '{inp}' is not recognized by the game dictionary. Please try again.\n")
         return user_input()
 
     return inp
@@ -73,51 +70,46 @@ def clear_screen():
 
 
 def compare_characters(inp: str, TURNS: int):
-    compare = list(zip(inp, WORD))
     for idx, char in enumerate(inp):
-        if char.lower() in WORD.lower():
+        if char == WORD[idx]:
+            GRID[TURNS][idx] = char.upper()
+        elif char in WORD:
             GRID[TURNS][idx] = char.lower()
         else:
-            INCORRECT_WORDS.append(char.lower())
-
-    for idx, tup in enumerate(compare):
-        if len(set(tup)) == 1:
-            GRID[TURNS][idx] = tup[0].upper()
+            INCORRECT_LETTERS.append(char.lower())
 
 
 def game_logic():
     TURNS = 0
-    while TURNS < 5:
-
+    while TURNS < 6:
         print(f"\nTURN NUMBER: {TURNS + 1}\n")
 
-        print("\nINCORRECT_WORDS:")
-        print(list(set(INCORRECT_WORDS)))
+        print("Incorrect Letters:")
+        print(list(set(INCORRECT_LETTERS)))
         print()
 
-        print("\nCURRENT GRID")
+        print("CURRENT GRID")
         print_grid()
 
-        print()
         inp = user_input()
 
         compare_characters(inp, TURNS)
         print(f"\nInputted word >>> {inp}")
 
-        print("\nINCORRECT_WORDS:")
-        print(list(set(INCORRECT_WORDS)))
+        print("Incorrect Letters:")
+        print(list(set(INCORRECT_LETTERS)))
         print()
 
-        print("\nCURRENT GRID")
+        print("CURRENT GRID")
         print_grid()
 
         if inp == WORD:
             print(f"You guessed the word {WORD} in {TURNS + 1} turns")
             break
 
-        play = input("enter [y/Y] to continue the game: ").lower()
+        play = input("Enter [y/Y] to continue the game: ").lower()
         if play not in "yes":
-            print("quitting game")
+            print("Quitting game")
             break
 
         print("Continuing game")
@@ -127,7 +119,7 @@ def game_logic():
         clear_screen()
 
     else:
-        print("You were not able to guess the word")
+        print("You were not able to guess the word.")
         print(f"The word was >>> {WORD}")
         print("Your current grid state is\n")
         print_grid()
@@ -139,13 +131,13 @@ def main():
     print(TITLE)
     print("\n\n\n")
 
-    print("This is you grid")
+    print("This is your grid")
     print_grid()
     print("\n", INSTRUCTIONS)
 
-    play = input("enter [y/Y] to play the game: ").lower()
+    play = input("Enter [y/Y] to play the game: ").lower()
     if play not in "yes":
-        print("quitting game")
+        print("Quitting game")
         return
     sleep(0.5)
     clear_screen()
