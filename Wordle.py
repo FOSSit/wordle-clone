@@ -3,6 +3,7 @@ import random
 from os import system, name
 from time import sleep
 
+
 with open("WordList.json", "r") as f:
     RAW_WORD_LIST = json.load(f)["words"]
 
@@ -86,7 +87,7 @@ def compare_characters(inp: str, TURNS: int):
 
 def game_logic():
     TURNS = 0
-    while TURNS < 5:
+    while TURNS < 6:
 
         print(f"\nTURN NUMBER: {TURNS + 1}\n")
 
@@ -129,8 +130,8 @@ def game_logic():
         print("You were not able to guess the word")
         print("Your current grid state is\n")
         print_grid()
-    if TURNS==5 and inp!= WORD:
-        print("You were not able to guess the word in 5 tries")
+    if TURNS==6 and inp!= WORD:
+        print("You were not able to guess the word in 6 tries")
         print(f"The right word was {WORD}" )
 
 
