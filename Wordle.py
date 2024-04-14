@@ -19,8 +19,7 @@ TITLE = r"""
     $$ $$/$$ $$ |$$ |  $$ |$$$$$$$  |$$ |  $$ |$$ |      $$$$$/          $$ |   __ $$ |      $$ |  $$ |$$ $$ $$ |$$$$$/
     $$$$/  $$$$ |$$ \__$$ |$$ |  $$ |$$ |__$$ |$$ |_____ $$ |_____       $$ \__/  |$$ |_____ $$ \__$$ |$$ |$$$$ |$$ |_____
     $$$/    $$$ |$$    $$/ $$ |  $$ |$$    $$/ $$       |$$       |      $$    $$/ $$       |$$    $$/ $$ | $$$ |$$       |
-    $$/      $$/  $$$$$$/  $$/   $$/ $$$$$$$/  $$$$$$$$/ $$$$$$$$/        $$$$$$/  $$$$$$$$/  $$$$$$/  $$/   $$/ $$$$$$$$/
-"""
+    $$/      $$/  $$$$$$/  $$/   $$/ $$$$$$$/  $$$$$$$$/ $$$$$$$$/        $$$$$$/  $$$$$$$$/  $$$$$$/  $$/   $$/ $$$$$$$$/"""
 
 INSTRUCTIONS = """
 INSTRUCTIONS:
@@ -39,15 +38,14 @@ INSTRUCTIONS:
 
 def user_input() -> str:
     inp = input(
-        "enter a 5 length word that you think may be the answer: ").capitalize()
-    print(inp, WORD)
+        "enter a 5 length word that you think may be the answer: ").lower()
     if len(inp) != 5:
-        print(f"the entered word '{inp}' is not of length '5', try again\n")
+        print(f"\033[91mthe entered word '{inp}' is not of length '5', try again\n\033[0m")
         return user_input()
 
     if inp not in RAW_WORD_LIST:
         print(
-            f"the entered word '{inp}' is not recognized by the game dictionary, try again\n")
+            f"\033[91mthe entered word '{inp}' is not recognized by the game dictionary, try again\n\033[0m")
         return user_input()
 
     return inp
@@ -87,50 +85,52 @@ def compare_characters(inp: str, TURNS: int):
 
 def game_logic():
     TURNS = 0
-    while TURNS < 5:
+    while TURNS < 6:
 
-        print(f"\nTURN NUMBER: {TURNS + 1}\n")
+        print(f"\n\033[94mTURN NUMBER: {TURNS + 1}\n\033[0m")
 
-        print("\nINCORRECT_WORDS:")
+        print("\n\033[93mINCORRECT_WORDS:\033[0m")
         print(list(set(INCORRECT_WORDS)))
         print()
 
-        print("\nCURRENT GRID")
+        print("\n\033[92mCURRENT GRID\033[0m")
         print_grid()
 
         print()
         inp = user_input()
 
         compare_characters(inp, TURNS)
-        print(f"\nInputted word >>> {inp}")
+        print(f"\n\033[95mInputted word >>> {inp}\033[0m")
 
-        print("\nINCORRECT_WORDS:")
+        print("\n\033[93mINCORRECT_WORDS:\033[0m")
         print(list(set(INCORRECT_WORDS)))
         print()
 
-        print("\nCURRENT GRID")
+        print("\n\033[92mCURRENT GRID\033[0m")
         print_grid()
 
         if inp == WORD:
-            print(f"You guessed the word {WORD} in {TURNS + 1} turns")
+            print(f"\033[92mYou guessed the word {WORD} in {TURNS + 1} turns\033[0m")
             break
 
         play = input("enter [y/Y] to continue the game: ").lower()
         if play not in "yes":
-            print("quitting game")
+            print("\033[91mquitting game\033[0m")
             break
 
-        print("Continuing game")
+        print("\033[94mContinuing game\033[0m")
 
         TURNS += 1
         sleep(0.5)
         clear_screen()
 
     else:
-        print("You were not able to guess the word")
-        print(f"The word was >>> {WORD}")
+        print("\033[91mYou were not able to guess the word\033[0m")
         print("Your current grid state is\n")
         print_grid()
+    if TURNS==6 and inp!= WORD:
+        print("\033[91mYou were not able to guess the word in 6 tries\033[0m")
+        print(f"\033[92mThe right word was {WORD}\033[0m")
 
 
 def main():
@@ -145,7 +145,7 @@ def main():
 
     play = input("enter [y/Y] to play the game: ").lower()
     if play not in "yes":
-        print("quitting game")
+        print("\033[91mquitting game\033[0m")
         return
     sleep(0.5)
     clear_screen()
