@@ -11,7 +11,18 @@ WORD = r.get_random_word()
 GRID = [[" " for _ in range(5)] for _ in range(6)]
 INCORRECT_WORDS = []
 
-TITLE = r"""
+class Colors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+TITLE = f"""
+{Colors.HEADER}
      __       __   ______   _______   _______   __        ________         ______   __         ______   __    __  ________
     /  |  _  /  | /      \ /       \ /       \ /  |      /        |       /      \ /  |       /      \ /  \  /  |/        |
     $$ | / \ $$ |/$$$$$$  |$$$$$$$  |$$$$$$$  |$$ |      $$$$$$$$/       /$$$$$$  |$$ |      /$$$$$$  |$$  \ $$ |$$$$$$$$/
@@ -21,9 +32,11 @@ TITLE = r"""
     $$$$/  $$$$ |$$ \__$$ |$$ |  $$ |$$ |__$$ |$$ |_____ $$ |_____       $$ \__/  |$$ |_____ $$ \__$$ |$$ |$$$$ |$$ |_____
     $$$/    $$$ |$$    $$/ $$ |  $$ |$$    $$/ $$       |$$       |      $$    $$/ $$       |$$    $$/ $$ | $$$ |$$       |
     $$/      $$/  $$$$$$/  $$/   $$/ $$$$$$$/  $$$$$$$$/ $$$$$$$$/        $$$$$$/  $$$$$$$$/  $$$$$$/  $$/   $$/ $$$$$$$$/
+{Colors.ENDC}
 """
 
-INSTRUCTIONS = """
+INSTRUCTIONS = f"""
+{Colors.OKBLUE}
 INSTRUCTIONS:
     1) A random 5 letter word is selected by the computer, the objective of the game is
        guess the word that is selected by 6 moves
@@ -35,6 +48,7 @@ INSTRUCTIONS:
     4) Correct letters that are in the correct position are visible as 'UPPERCASE' characters
 
     5) Correct letters that are in the wrong position are visible as 'lowercase' characters
+{Colors.ENDC}
 """
 
 
@@ -43,12 +57,12 @@ def user_input() -> str:
         "enter a 5 length word that you think may be the answer: ").capitalize()
     print(inp)
     if len(inp) != 5:
-        print(f"the entered word '{inp}' is not of length '5', try again\n")
+        print(f"{Colors.FAIL}the entered word '{inp}' is not of length '5', try again\n{Colors.ENDC}")
         return user_input()
 
     if inp !=WORD:
         print(
-            f"the entered word '{inp}' is not recognized by the game dictionary, try again\n")
+            f"{Colors.FAIL}the entered word '{inp}' is not recognized by the game dictionary, try again\n{Colors.ENDC}")
         return user_input()
 
     return inp
@@ -113,7 +127,7 @@ def game_logic():
         print_grid()
 
         if inp == WORD:
-            print(f"You guessed the word {WORD} in {TURNS + 1} turns")
+            print(f"{Colors.OKGREEN}You guessed the word {WORD} in {TURNS + 1} turns{Colors.ENDC}")
             break
 
         play = input("enter [y/Y] to continue the game: ").lower()
